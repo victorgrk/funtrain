@@ -1,0 +1,60 @@
+<h1>Foire aux questions <i class="fas fa-plus-circle hover-green"(click)="setAddAction()"  data-toggle="modal" data-target="#addModal" *ngIf="hasPermissionToEdit()"></i></h1>
+
+<ul class="nav nav-pills nav-fill">
+    <li class="nav-item">
+      <a class="nav-link active" (click)="softFilter = 'all' ">Tous les logiciels</a>
+    </li>
+    <li class="nav-item" *ngFor="let software of softwares">
+      <a class="nav-link" (click)="softFilter = software.id">{{ software.name }}</a>
+    </li>
+</ul>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item" *ngFor="let f of faqs | softFilter:softFilter">
+    <h2 class="text-dark">{{f.question }} <i class="fas fa-edit hover-green" data-toggle="modal" (click)="setUpdateAction(f)"data-target="#updateModal" *ngIf="hasPermissionToEdit()"></i>
+      &nbsp;<i class="fas fa-trash-alt hover-green" (click)="onDelete(f)" *ngIf="hasPermissionToEdit()"></i>
+    </h2>
+    <blockquote class="blockquote text-dark">
+      <p class="mb-0">{{ f.answer }}</p>
+    </blockquote>
+  </li>
+</ul>
+
+<div id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addModalTitle" aria-hidden="true" *ngIf="hasPermissionToEdit()">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalTitle">{{ currentId ? 'Modifier' : 'Ajouter'}}</h5>
+        <button class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="fg" (onSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="title">Question</label>
+            <input id="title" class="form-control" type="text" formControlName="question">
+            
+          </div>
+          <div class="form-group">
+            <label for="description">Réponse</label>
+            <textarea id="description" class="form-control" formControlName="answer"></textarea>
+            
+          </div>
+          <div class="form-group">
+            <label for="softId">Logiciel</label>
+            <select id="softId" class="form-control" formControlName="softID">
+              <option [value]="soft.id" *ngFor="let soft of softwares">{{ soft.name }}</option>
+            </select>
+            
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="btn-group" role="group" aria-label="Boutons">
+            <button class="btn btn-danger" type="reset" #closeModal data-dismiss="modal">Annuler</button>
+            <button class="btn btn-success" type="submit">{{ currentId ? 'Modifier' : 'Ajouter'}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

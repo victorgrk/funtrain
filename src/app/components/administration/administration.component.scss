@@ -1,0 +1,9 @@
+ul.list-group {
+    max-height: 650px;
+    overflow-y: scroll;
+    position: absolute;
+}
+
+ul.list-group > li {
+    height: 60px;
+}

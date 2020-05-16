@@ -1,0 +1,96 @@
+<h1>Liste des addons <i class="fas fa-plus-circle hover-green" data-toggle="modal" data-target="#addModal" *ngIf="hasPermissionToEdit()"></i> </h1>
+<ul class="nav nav-tabs" role="tablist">
+    <li
+      [ngClass]="{'nav-item nav-link': true, 'active': softFilter === 'all'}"
+      (click)="softFilter = 'all'"
+      data-toggle="tab" role="tab">
+      Tous les logiciels
+    </li>
+    <li
+    [ngClass]="{'nav-item nav-link': true, 'active': softFilter === software.id}"
+    (click)="softFilter = software.id"
+    *ngFor="let software of softwares"
+    data-toggle="tab" role="tab">
+      {{ software.name }}
+    </li>
+</ul>
+<input type="search" class="search form-control form-control-lg mb-2" [(ngModel)]="search" placeholder="Rechercher une ligne par nom" />
+<div class="card-columns">
+  <div class="card" *ngFor="let line of lines | regionFilter:region | search:search | softFilter:softFilter | limit:currentPage " (click)="showline(line.id)">
+    <img class="card-img-top" [src]="line.images[0]" [alt]="line.nom">
+    <div class="card-body text-center">
+      <h3 class="card-title text-dark">{{ line.nom }}</h3>
+    </div>
+  </div>
+</div>
+<div class="w-100 d-flex flex-row-reverse">
+  <nav aria-label="Page navigation">
+  <ul class="pagination pagination-lg">
+    <li [ngClass]="{'page-item': true, 'active': index === currentPage}"
+      [attr.aria-current]="index === currentPage ? 'page' : ''"
+      *ngFor="let index of range()"
+      (click)="currentPage = index">
+      <a class="page-link" href="javascript:void(0)">{{ index }} <span class="sr-only">{{ index === currentPage ? '(current)' : ''}}</span></a>
+    </li>
+  </ul>
+</nav>
+</div>
+
+<div id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addModal-title" aria-hidden="true" *ngIf="hasPermissionToEdit()">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModal-title">Ajouter une ligne</h5>
+        <button class="close" data-dismiss="modal" #closeModal aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="fg" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nom">Nom de la ligne</label>
+            <input id="nom" class="form-control" type="text" formControlName="nom">
+          </div>
+          <div class="form-group">
+            <label for="version">Version de la ligne</label>
+            <input id="version" class="form-control" type="number" formControlName="version">
+          </div>
+          <div class="form-group">
+            <label for="description">Description de la ligne</label>
+            <textarea id="description" class="form-control" formControlName="description"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="regions">Régions <span class="text-small text-muted">Indiquer toutes les régions traversés ('autres' pour les lignes étrangères/imaginaires)</span> </label>
+            <input type="text" id="regions" class="form-control" formControlName="regions">
+          </div>
+          <div class="form-group">
+            <label for="softId">Logiciel</label>
+            <select id="softId" class="form-control" formControlName="softID">
+              <option [value]="soft.id" *ngFor="let soft of softwares">{{ soft.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="author">Auteur</label>
+            <select id="author" class="form-control" formControlName="author">
+              <option [value]="author.id" *ngFor="let author of authors">{{ author.nom }}</option>
+            </select>
+          </div>
+          <div class="custom-file">
+            <input id="images" class="custom-file-input" type="file" (change)="onImageSelect($event)" multiple="true">
+            <label for="files" class="custom-file-label">{{ images ? images.length + ' images séléctinnés' : 'Images '}}</label>
+          </div>
+          <div class="custom-file">
+            <input id="files" class="custom-file-input" type="file" (change)="onFileSelect($event)" multiple="true">
+            <label for="files" class="custom-file-label">{{ files ? files.length + ' fichiers séléctinnés' : 'Fichiers'}}</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="btn-group" role="group" aria-label="Boutons">
+            <button class="btn btn-danger" type="reset" data-dismiss="modal" data-target="#addModal">Annuler</button>
+            <button class="btn btn-success" type="submit" [disabled]="isFormInvalid()">Ajouter {{ fg ? fg.get('nom').value : '' }}</button>
+          </div> 
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
