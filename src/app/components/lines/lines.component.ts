@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { APIService } from 'src/app/services/API.service';
 import { AuthentificationService } from 'src/app/services/Authentification.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -39,7 +38,6 @@ export class LinesComponent implements OnInit, OnDestroy {
   constructor(
     private $api: APIService,
     private readonly $authentification: AuthentificationService,
-    private $formBuilder: FormBuilder,
     private $router: Router,
     private $route: ActivatedRoute,
     private $toastr: ToastrService
@@ -121,39 +119,31 @@ export class LinesComponent implements OnInit, OnDestroy {
     return this.$authentification.hasPermissionToEdit('lines');
   }
   initForm() {
-    this.fg = this.$formBuilder.group({
-      nom: ['', Validators.required],
-      version: [0, Validators.required],
-      description: [''],
-      softID: [0, Validators.required],
-      author: [0, Validators.required],
-      regions: ['', Validators.required]
+    this.fg = new FormGroup({
+      nom: new FormControl('', Validators.required),
+      version: new FormControl(0, Validators.required),
+      description: new FormControl(''),
+      softID: new FormControl(0, Validators.required),
+      author: new FormControl(0, Validators.required),
+      regions: new FormControl('', Validators.required),
+      images: new FormArray([]),
+      files: new FormArray([])
     });
   }
-  onFileSelect(event) {
-    this.files = event.target.files;
+
+  getFormArray(field: string) {
+    return (this.fg.controls[field]) as FormArray
   }
-  onImageSelect(event) {
-    this.images = event.target.files;
+  add(field: string) {
+    this.getFormArray(field).controls.push(new FormControl(''))
   }
+  remove(field: string, index: number) {
+    this.getFormArray(field).controls.splice(index, 1)
+  }
+
   onSubmit() {
     const values = this.fg.value;
-    const formData = new FormData();
-    formData.append('nom', values.nom);
-    formData.append('version', String(values.version)),
-    formData.append('description', values.description),
-    formData.append('softID', String(values.softID)),
-    formData.append('author', String(values.author));
-    formData.append('region', values.regions);
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.files.length; i++) {
-      formData.append('fichiers[]', this.files[i], this.files[i].name);
-    }
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.images.length; i++) {
-      formData.append('fichiers[]', this.images[i], this.images[i].name);
-    }
-    this.postSubscription = this.$api.post<any>('lines', formData).subscribe((e) => {
+    this.postSubscription = this.$api.post<any>('lines', values).subscribe((e) => {
       this.$toastr.success('La ligne a été créée avec succès');
       this.$closeForm.nativeElement.click();
       this.lines.push(e);
@@ -178,12 +168,12 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   range(): number[] {
     const buffer = this.lines.filter(e => {
-      return  (this.softFilter === 'all' ||
-              e.softID === this.softFilter) &&
-              (this.search === '' ||
-              e.nom.toUpperCase().indexOf(this.search.toUpperCase()) !== -1) &&
-              this.region === 'all' ||
-              e.region.indexOf(this.region) !== -1;
+      return (this.softFilter === 'all' ||
+        e.softID === this.softFilter) &&
+        (this.search === '' ||
+          e.nom.toUpperCase().indexOf(this.search.toUpperCase()) !== -1) &&
+        this.region === 'all' ||
+        e.region.indexOf(this.region) !== -1;
     });
     return Array.from(Array(Math.ceil(buffer.length / 9)), (x, i) => i + 1);
   }
@@ -192,6 +182,6 @@ export class LinesComponent implements OnInit, OnDestroy {
   }
 
   isFormInvalid() {
-    return this.fg.invalid || !this.files || !this.images;
+    return this.fg.invalid;
   }
 }

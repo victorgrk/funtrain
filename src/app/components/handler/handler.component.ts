@@ -3,8 +3,7 @@ import { APIService } from 'src/app/services/API.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/services/Authentification.service';
 import { Subscription } from 'rxjs';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { environment } from 'src/environments/environment';
+import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -39,10 +38,9 @@ export class HandlerComponent implements OnInit, OnDestroy {
     private $api: APIService,
     private $authentification: AuthentificationService,
     private $route: ActivatedRoute,
-    private $fb: FormBuilder,
     private $router: Router,
     private $toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.$route.params.forEach((e) => {
@@ -153,32 +151,30 @@ export class HandlerComponent implements OnInit, OnDestroy {
       this.textSubscription.unsubscribe();
     }
   }
-
   initForm() {
-    this.fg = this.$fb.group({
-      nom: ["", Validators.required],
-      version: [0, Validators.required],
-      description: [""],
-      softID: [0, Validators.required],
+    this.fg = new FormGroup({
+      nom: new FormControl('', Validators.required),
+      version: new FormControl(0, Validators.required),
+      description: new FormControl(''),
+      softID: new FormControl(0, Validators.required),
+      images: new FormArray([]),
+      files: new FormArray([])
     });
+  }
+
+  getFormArray(field: string) {
+    return (this.fg.controls[field]) as FormArray
+  }
+  add(field: string) {
+    this.getFormArray(field).controls.push(new FormControl(''))
+  }
+  remove(field: string, index: number) {
+    this.getFormArray(field).controls.splice(index, 1)
   }
   onSubmit() {
     const values = this.fg.value;
-    const formData = new FormData();
-    formData.append("nom", values.nom);
-    formData.append("id", this.id);
-    formData.append("version", String(values.version));
-    formData.append("description", values.description);
-    formData.append("softID", String(values.description));
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.files.length; i++) {
-      formData.append("fichiers[]", this.files[i], this.files[i].name);
-    }
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.images.length; i++) {
-      formData.append("fichiers[]", this.images[i], this.images[i].name);
-    }
-    this.putSubscription = this.$api.put<any>("handlers", formData).subscribe(
+    values.id = this.id;
+    this.putSubscription = this.$api.put<any>("handlers", values).subscribe(
       (e) => {
         this.$toastr.success("L'addon a bien été modifié");
         this.handler = e;
@@ -260,6 +256,12 @@ export class HandlerComponent implements OnInit, OnDestroy {
   }
   setUpdatedValues() {
     this.fg.setValue(this.handler);
+    this.handler.images.forEach(element => {
+      this.getFormArray('images').controls.push(new FormControl(element))
+    });
+    this.handler.files.forEach(element => {
+      this.getFormArray('files').controls.push(new FormControl(element))
+    });
   }
 
   hasPermissionToEdit(): boolean {
@@ -270,8 +272,8 @@ export class HandlerComponent implements OnInit, OnDestroy {
     if (!this.$authentification.hasPermissionToEdit("administration")) {
       return;
     }
-    this.textForm = this.$fb.group({
-      text: ["", Validators.required],
+    this.textForm = new FormGroup({
+      text: new FormControl("", Validators.required),
     });
   }
   setTextValue(val) {

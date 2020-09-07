@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://api.funtrain.net/",
+  apiUrl: "/api/",
   encryptionKey: "DpxV8WG4wdbBtAsF"
 };
 

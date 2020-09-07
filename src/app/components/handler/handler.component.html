@@ -152,34 +152,26 @@
           <div class="form-group">
             <label for="softId">Logiciel</label>
             <select id="softId" class="form-control" formControlName="softID">
-              <option [value]="soft.id" *ngFor="let soft of softwares">{{
-                soft.name
-              }}</option>
+              <option [value]="soft.id" *ngFor="let soft of softwares">
+                {{ soft.name }}
+              </option>
             </select>
           </div>
-          <div class="custom-file">
-            <input
-              id="images"
-              class="custom-file-input"
-              type="file"
-              (change)="onFileSelect($event, 'images')"
-              multiple="true"
-            />
-            <label for="images" class="custom-file-label">{{
-              images ? images.length + " images séléctinnés" : "Images"
-            }}</label>
+          <div [formArray]="files">
+            <app-file
+              [formControlName]="i"
+              *ngFor="let i of getFormArray('files').controls; let i = index"
+              (add)="add('files')"
+              (delete)="remove('files', i)"
+            ></app-file>
           </div>
-          <div class="custom-file">
-            <input
-              id="files"
-              class="custom-file-input"
-              type="file"
-              (change)="onFileSelect($event, 'files')"
-              multiple="true"
-            />
-            <label for="files" class="custom-file-label">{{
-              files ? files.length + " fichiers séléctinnés" : "Fichiers"
-            }}</label>
+          <div [formArray]="images">
+            <app-file
+              [formControlName]="i"
+              *ngFor="let i of getFormArray('images').controls; let i = index"
+              (add)="add('images')"
+              (delete)="remove('images', i)"
+            ></app-file>
           </div>
         </div>
         <div class="modal-footer">
@@ -241,7 +233,7 @@
               formControlName="text"
               rows="5"
               cols="30"
-              style="overflow: hidden;"
+              style="overflow: hidden"
             ></textarea>
           </div>
         </div>

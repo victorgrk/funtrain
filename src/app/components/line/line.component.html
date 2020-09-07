@@ -179,29 +179,21 @@
               }}</option>
             </select>
           </div>
-          <div class="custom-file">
-            <input
-              id="images"
-              class="custom-file-input"
-              type="file"
-              (change)="onFileSelect($event, 'images')"
-              multiple="true"
-            />
-            <label for="images" class="custom-file-label">{{
-              images ? images.length + " images séléctinnée(s)" : "Images"
-            }}</label>
+          <div [formArray]="files">
+            <app-file
+              [formControlName]="i"
+              *ngFor="let i of getFormArray('files').controls; let i = index"
+              (add)="add('files')"
+              (delete)="remove('files', i)"
+            ></app-file>
           </div>
-          <div class="custom-file">
-            <input
-              id="files"
-              class="custom-file-input"
-              type="file"
-              (change)="onFileSelect($event, 'files')"
-              multiple="true"
-            />
-            <label for="files" class="custom-file-label">{{
-              files ? files.length + " fichiers séléctinné(s)" : "Fichiers"
-            }}</label>
+          <div [formArray]="images">
+            <app-file
+              [formControlName]="i"
+              *ngFor="let i of getFormArray('images').controls; let i = index"
+              (add)="add('images')"
+              (delete)="remove('images', i)"
+            ></app-file>
           </div>
         </div>
         <div class="modal-footer">

@@ -11,6 +11,7 @@ import {
   FormBuilder,
   Validators,
   FormControl,
+  FormArray,
 } from "@angular/forms";
 import { APIService } from "src/app/services/API.service";
 import { AuthentificationService } from "src/app/services/Authentification.service";
@@ -57,7 +58,7 @@ export class LineComponent implements OnInit, OnDestroy {
     private $fb: FormBuilder,
     private $router: Router,
     private $toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.$route.params.forEach((e) => {
@@ -193,39 +194,33 @@ export class LineComponent implements OnInit, OnDestroy {
   }
 
   initForm() {
-    this.fg = this.$fb.group({
-      nom: ["", Validators.required],
-      version: [0, Validators.required],
-      description: [""],
-      softID: [0, Validators.required],
-      author: [0, Validators.required],
-      region: ["", Validators.required],
+    this.fg = new FormGroup({
+      nom: new FormControl('', Validators.required),
+      version: new FormControl(0, Validators.required),
+      description: new FormControl(''),
+      softID: new FormControl(0, Validators.required),
+      author: new FormControl(0, Validators.required),
+      regions: new FormControl('', Validators.required),
+      images: new FormArray([]),
+      files: new FormArray([])
     });
   }
+
+  getFormArray(field: string) {
+    return (this.fg.controls[field]) as FormArray
+  }
+  add(field: string) {
+    this.getFormArray(field).controls.push(new FormControl(''))
+  }
+  remove(field: string, index: number) {
+    this.getFormArray(field).controls.splice(index, 1)
+  }
+
+
   onSubmit() {
     const values = this.fg.value;
-    const formData = new FormData();
-    formData.append("id", this.id);
-    formData.append("nom", values.nom);
-    formData.append("version", String(values.version));
-    formData.append("description", values.description);
-    formData.append("softID", String(values.softID));
-    formData.append("author", String(values.author));
-    formData.append("region", values.region);
-    if (this.files) {
-      // tslint:disable-next-line: prefer-for-of
-      for (let i = 0; i < this.files.length; i++) {
-        formData.append("fichiers[]", this.files[i], this.files[i].name);
-      }
-    }
-    if (this.images) {
-      // tslint:disable-next-line: prefer-for-of
-      for (let i = 0; i < this.images.length; i++) {
-        formData.append("fichiers[]", this.images[i], this.images[i].name);
-      }
-    }
-
-    this.putSubscription = this.$api.put<any>("lines", formData).subscribe(
+    values.id = this.id
+    this.putSubscription = this.$api.put<any>("lines", values).subscribe(
       (e) => {
         this.line = e;
         this.$toastr.success("La ligne a été modifiée avec succès");
@@ -254,17 +249,6 @@ export class LineComponent implements OnInit, OnDestroy {
         }
       }
     );
-  }
-
-  onFileSelect(event, type: string) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files;
-      if (type === "images") {
-        this.images = file;
-      } else {
-        this.files = file;
-      }
-    }
   }
 
   onDelete() {
@@ -311,6 +295,12 @@ export class LineComponent implements OnInit, OnDestroy {
       region: this.line.region,
       softID: this.line.softID,
       author: this.line.author,
+    });
+    this.line.images.forEach(element => {
+      this.getFormArray('images').controls.push(new FormControl(element))
+    });
+    this.line.files.forEach(element => {
+      this.getFormArray('files').controls.push(new FormControl(element))
     });
   }
 

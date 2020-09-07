@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { APIService } from 'src/app/services/API.service';
 import { AuthentificationService } from 'src/app/services/Authentification.service';
 import { Subscription } from 'rxjs';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
@@ -47,7 +47,7 @@ export class HandlersComponent implements OnInit, OnDestroy {
     this.softwareSubscription = this.$api.get<any[]>('softwares').subscribe(
       e => {
         this.softwares = e;
-      },  error => {
+      }, error => {
         switch (error.status) {
           case 404:
             this.$toastr.error('La ressource demandée est introuvable');
@@ -67,7 +67,7 @@ export class HandlersComponent implements OnInit, OnDestroy {
     this.handlerSubscription = this.$api.get<any[]>('handlers').subscribe(
       e => {
         this.handlers = e;
-      },  error => {
+      }, error => {
         switch (error.status) {
           case 404:
             this.$toastr.error('La ressource demandée est introuvable');
@@ -87,7 +87,7 @@ export class HandlersComponent implements OnInit, OnDestroy {
     this.authorsSubscription = this.$api.get<any[]>('authors').subscribe(
       e => {
         this.authors = e;
-      },  error => {
+      }, error => {
         switch (error.status) {
           case 404:
             this.$toastr.error('La ressource demandée est introuvable');
@@ -106,7 +106,7 @@ export class HandlersComponent implements OnInit, OnDestroy {
     );
     if (this.hasPermissionToEdit()) {
       this.initForm();
-      
+
     }
   }
   ngOnDestroy() {
@@ -121,35 +121,34 @@ export class HandlersComponent implements OnInit, OnDestroy {
     return this.$authentification.hasPermissionToEdit('handlers');
   }
   initForm() {
-    this.fg = this.$formBuilder.group({
-      nom: ['', Validators.required],
-      version: [0, Validators.required],
-      description: [''],
-      author: [0, Validators.required],
-      softID: [0, Validators.required]
+    this.fg = new FormGroup({
+      nom: new FormControl('', Validators.required),
+      version: new FormControl(0, Validators.required),
+      description: new FormControl(''),
+      softID: new FormControl(0, Validators.required),
+      author: new FormControl(0, Validators.required),
+      regions: new FormControl('', Validators.required),
+      images: new FormArray([]),
+      files: new FormArray([])
     });
+  }
+
+  getFormArray(field: string) {
+    return (this.fg.controls[field]) as FormArray
+  }
+  add(field: string) {
+    this.getFormArray(field).controls.push(new FormControl(''))
+  }
+  remove(field: string, index: number) {
+    this.getFormArray(field).controls.splice(index, 1)
   }
   onSubmit() {
     const values = this.fg.value;
-    const formData = new FormData();
-    formData.append('nom', values.nom);
-    formData.append('version', String(values.version)),
-    formData.append('description', values.description),
-    formData.append('softID', String(values.description)),
-    formData.append('author', String(values.author));
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.files.length; i++) {
-      formData.append('fichiers[]', this.files[i], this.files[i].name);
-    }
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.images.length; i++) {
-      formData.append('fichiers[]', this.images[i], this.images[i].name);
-    }
-    this.postSubscription = this.$api.post<any>('handlers', formData).subscribe((e) => {
+    this.postSubscription = this.$api.post<any>('handlers', values).subscribe((e) => {
       this.handlers.push(e);
       this.$closeForm.nativeElement.click();
       this.$toastr.success('L\'addon a bien été créé');
-    },  error => {
+    }, error => {
       switch (error.status) {
         case 404:
           this.$toastr.error('La ressource demandée est introuvable');
