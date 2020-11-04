@@ -1,0 +1,6 @@
+li:hover:not(.btn) {
+  filter: brightness(90%) contrast(70%);
+}
+li {
+  transition: all 0.3s ease-out;
+}

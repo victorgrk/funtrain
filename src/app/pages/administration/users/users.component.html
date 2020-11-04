@@ -1,0 +1,84 @@
+<h1 class="mb-1">Utilisateur</h1>
+<form [formGroup]="fg" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="uname">Nom d'utilisateur</label>
+    <input
+      id="uname"
+      class="form-control"
+      type="text"
+      formControlName="uname"
+    />
+  </div>
+  <div class="form-group">
+    <label for="admPassword">Mot de passe</label>
+    <input
+      id="admPassword"
+      class="form-control"
+      type="password"
+      formControlName="psw"
+    />
+  </div>
+  <div formGroupName="permissions">
+    <div class="form-group">
+      <label for="lines">Ajouter / Modifier des lignes</label>
+      <select class="form-control" formControlName="line" id="lines">
+        <option value="0">Non</option>
+        <option value="1">Oui</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="addons">Ajouter / Modifier des addons</label>
+      <select class="form-control" formControlName="handler" id="addons">
+        <option value="0">Non</option>
+        <option value="1">Oui</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="faq">Ajouter / Modifier des question (FAQ)</label>
+      <select class="form-control" formControlName="faq" id="faq">
+        <option value="0">Non</option>
+        <option value="1">Oui</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="administration">Gérer les élément administratifs</label>
+      <select
+        class="form-control"
+        formControlName="administration"
+        id="administration"
+      >
+        <option value="0">Non</option>
+        <option value="1">Oui</option>
+      </select>
+    </div>
+  </div>
+  <div class="btn-group" role="group" aria-label="Button group">
+    <button class="btn btn-danger" (click)="setAddAction()" type="reset">
+      Réinitialiser
+    </button>
+    <button class="btn btn-success" type="submit" [disabled]="fg.invalid">
+      {{ id ? "Modifier" : "Ajouter" }} {{ fg.get("uname").value }}
+    </button>
+  </div>
+</form>
+<ul class="list-group">
+  <li
+    class="list-group-item d-flex justify-content-between"
+    *ngFor="let data of users$ | async | namesort: '-username'"
+  >
+    <span class="text-dark">{{ data.username | uppercase }}</span>
+    <div class="btn-group" role="group" aria-label="Action">
+      <button class="btn btn-danger" type="button" (click)="onDelete(data.id)">
+        Supprimer
+      </button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        (click)="setUpdateAction(data)"
+      >
+        Modifier
+      </button>
+    </div>
+  </li>
+</ul>

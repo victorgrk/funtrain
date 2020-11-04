@@ -1,0 +1,88 @@
+<form [formGroup]="fg" (ngSubmit)="onSubmit()">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">
+      {{ id ? "Modifier" : "Ajouter" }} un plugin
+    </h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="bsModalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <tabset [justified]="true">
+      <tab heading="Identité du plugin">
+        <div class="form-group">
+          <label for="nom">Nom du plugin</label>
+          <input
+            id="nom"
+            class="form-control"
+            type="text"
+            formControlName="nom"
+          />
+        </div>
+        <div class="form-group">
+          <label for="version">Version du plugin</label>
+          <input
+            id="version"
+            class="form-control"
+            type="number"
+            formControlName="version"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Description du plugin</label>
+          <textarea
+            id="description"
+            class="form-control"
+            formControlName="description"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="softId">Logiciel</label>
+          <select id="softId" class="form-control" formControlName="softID">
+            <option [value]="soft.id" *ngFor="let soft of softwares$ | async">
+              {{ soft.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="author">Auteur</label>
+          <select id="author" class="form-control" formControlName="author">
+            <option [value]="author.id" *ngFor="let author of authors$ | async">
+              {{ author.nom }}
+            </option>
+          </select>
+        </div>
+      </tab>
+      <tab heading="Fichiers à télécharger">
+        <div formArrayName="files">
+          <app-file
+            [formControlName]="i"
+            *ngFor="let _ of getFileForm().controls; let i = index"
+            (add)="addFile()"
+            (remove)="removeFileForm(i)"
+          ></app-file>
+        </div>
+      </tab>
+      <tab heading="Images">
+        <div formArrayName="images">
+          <app-file
+            [formControlName]="i"
+            *ngFor="let _ of getImageForm().controls; let i = index"
+            (add)="addImage()"
+            (remove)="removeImageForm(i)"
+          ></app-file>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-default">
+      {{ id ? "Modifier" : "Ajouter" }}
+    </button>
+  </div>
+</form>

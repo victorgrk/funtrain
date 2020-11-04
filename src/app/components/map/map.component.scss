@@ -1,0 +1,145 @@
+.land {
+  fill: #cccccc;
+  fill-opacity: 1;
+  stroke: white;
+  stroke-opacity: 1;
+  stroke-width: 0.3;
+  transition: 0.3s fill ease-out;
+}
+.land:hover {
+  fill: lighten($color: #a8c0fc, $amount: 20%);
+  cursor: pointer;
+}
+.land-active {
+  fill: darken($color: #a8c0fc, $amount: 20%);
+}
+#FR-NAQ {
+  $color: #a8c0fc;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-GES {
+  $color: #dda8fc;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-ARA {
+  $color: #fca8d2;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-BFC {
+  $color: #fcd1a8;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-BRE {
+  $color: #fca8ac;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-CVL {
+  $color: #a8f2fc;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-COR {
+  $color: #a8fcdc;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-IDF {
+  $color: #a8fcc4;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-OCC {
+  $color: #a8fcac;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-HDF {
+  $color: #dcfca8;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-NOR {
+  $color: #fcfba8;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-PDL {
+  $color: #fcd1a8;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}
+#FR-PAC {
+  $color: #fcaea8;
+  fill: $color;
+  &:hover {
+    fill: lighten($color, $amount: 20);
+  }
+  &.land-active {
+    fill: darken($color, $amount: 20%);
+  }
+}

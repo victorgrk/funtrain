@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-center flex-wrap w-100 my-2 px-5">
+  <span class="mx-3">
+    <input
+      type="search"
+      class="search form-control mb-2"
+      [(ngModel)]="search"
+      placeholder="Rechercher un plugin"
+    />
+  </span>
+  <span class="mx-3">
+    <select [(ngModel)]="soft" class="search form-control mb-2">
+      <option value="">Tous les logiciels</option>
+      <option [value]="soft.id" *ngFor="let soft of softwares$ | async">
+        {{ soft.name }}
+      </option>
+    </select>
+  </span>
+  <span ckass="mx-3">
+    <button
+      class="btn btn-outline-danger"
+      type="button"
+      (click)="resetFilter()"
+    >
+      Réinitialiser les filtres
+    </button>
+  </span>
+</div>
+<div *ngIf="handlers$ | async | filter: search + ',' + soft as lines">
+  <div class="d-flex flex-wrap justify-content-center">
+    <div
+      style="max-width: 1052px"
+      class="d-flex flex-wrap justify-content-center"
+    >
+      <app-card
+        url="addons"
+        [data]="line"
+        *ngFor="let line of lines | limit: currentPage; trackBy: trackBy"
+      ></app-card>
+    </div>
+  </div>
+  <div class="d-flex flex-wrap justify-content-center mt-2">
+    <pagination
+      [totalItems]="lines.length - 1"
+      [(ngModel)]="currentPage"
+    ></pagination>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: '/api/',
+  apiUrl: 'https://api.funtrain.net/',
   encryptionKey: 'DpxV8WG4wdbBtAsF'
 };

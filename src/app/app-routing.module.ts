@@ -1,29 +1,40 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { IndexComponent } from './components/index/index.component';
-import { HandlersComponent } from './components/handlers/handlers.component';
-import { HandlerComponent } from './components/handler/handler.component';
-import { LinesComponent } from './components/lines/lines.component';
-import { LineComponent } from './components/line/line.component';
-import { LinksComponent } from './components/links/links.component';
-import { FaqComponent } from './components/faq/faq.component';
-import { AdministrationComponent } from './components/administration/administration.component';
-import { ContactComponent } from './components/contact/contact.component';
-
+import { NgModule } from '@angular/core'
+import { Routes, RouterModule } from '@angular/router'
+import { QuicklinkStrategy, QuicklinkModule } from 'ngx-quicklink'
+import { IndexComponent } from './pages/index/index.component'
 const routes: Routes = [
-  {path: '', component: IndexComponent},
-  {path: 'addons', component: HandlersComponent},
-  {path: 'addon/:id', component: HandlerComponent},
-  {path: 'lines/:region', component: LinesComponent},
-  {path: 'line/:id', component: LineComponent},
-  {path: 'links', component: LinksComponent},
-  {path: 'faq', component: FaqComponent},
-  {path: 'administration', component: AdministrationComponent},
-  {path: 'contact', component: ContactComponent}
+  {
+    path: '',
+    component: IndexComponent
+  },
+  {
+    path: 'lines',
+    loadChildren: () => import('./pages/lines/lines.module').then(e => e.LinesModule)
+  },
+  {
+    path: 'addons',
+    loadChildren: () => import('./pages/handlers/handlers.module').then(e => e.HandlersModule),
+  },
+  {
+    path: 'administration',
+    loadChildren: () => import('./pages/administration/administration.module').then(e => e.AdministrationModule),
+  },
+  {
+    path: 'faq',
+    loadChildren: () => import("./pages/faq/faq.module").then(e => e.FaqModule)
+  },
+  {
+    path: 'links',
+    loadChildren: () => import("./pages/links/links.module").then(e => e.LinksModule)
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    QuicklinkModule,
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: QuicklinkStrategy
+    })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

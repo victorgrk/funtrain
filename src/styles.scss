@@ -14,6 +14,15 @@ select {
   box-sizing: border-box;
 }
 
+.editor-statusbar {
+  display: none !important;
+}
+
+.editor-toolbar {
+  background-color: white !important;
+  opacity: 0.9 !important;
+}
+
 /* Set a style for all buttons */
 .login-button {
   background-color: var(--second-color);

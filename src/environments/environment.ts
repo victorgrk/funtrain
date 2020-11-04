@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "/api/",
+  apiUrl: "http://192.168.1.60:3000/",
   encryptionKey: "DpxV8WG4wdbBtAsF"
 };
 

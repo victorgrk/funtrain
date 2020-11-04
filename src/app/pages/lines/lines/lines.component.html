@@ -1,0 +1,55 @@
+<h1>
+  Liste des lignes
+  <i
+    class="fas fa-plus-circle hover-green"
+    (click)="openModal()"
+    *ngIf="hasPermissionToEdit()"
+  ></i>
+</h1>
+<div class="d-flex justify-content-around flex-wrap w-100 my-2">
+  <app-map style="width: 280px" [region]="region"></app-map>
+  <div>
+    <h4>Affûtez votre recherche</h4>
+    <input
+      type="search"
+      class="search form-control form-control-lg mb-2"
+      [(ngModel)]="search"
+      placeholder="Rechercher une ligne par nom"
+    />
+    <select [(ngModel)]="soft" class="search form-control form-control-lg mb-2">
+      <option value="">Tous les logiciels</option>
+      <option [value]="soft.id" *ngFor="let soft of softwares$ | async">
+        {{ soft.name }}
+      </option>
+    </select>
+    <button
+      class="btn btn-outline-danger w-100"
+      type="button"
+      (click)="resetFilter()"
+    >
+      Réinitialiser les filtres
+    </button>
+  </div>
+</div>
+<div
+  *ngIf="lines$ | async | filter: search + ',' + soft + ',' + region as lines"
+>
+  <div class="d-flex flex-wrap justify-content-center">
+    <div
+      style="max-width: 1052px"
+      class="d-flex flex-wrap justify-content-center"
+    >
+      <app-card
+        url="lines"
+        [data]="line"
+        *ngFor="let line of lines | limit: currentPage; trackBy: trackBy"
+      ></app-card>
+    </div>
+  </div>
+  <div class="d-flex flex-wrap justify-content-center mt-2">
+    <pagination
+      [totalItems]="lines.length - 1"
+      [(ngModel)]="currentPage"
+    ></pagination>
+  </div>
+</div>

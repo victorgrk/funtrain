@@ -1,0 +1,63 @@
+<section *ngIf="data$ | async as line">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>
+        {{ line.nom }} (v{{ line.version }})
+        <div
+          class="fb-like"
+          data-href="https://www.facebook.com/funtrain.net"
+          data-layout="button_count"
+          data-action="like"
+          data-size="large"
+          data-show-faces="false"
+          data-share="true"
+        ></div>
+        <i
+          class="fas fa-edit hover-green"
+          (click)="openModal(line.id)"
+          *ngIf="hasPermissionToEdit()"
+        ></i>
+        &nbsp;<i
+          class="fas fa-trash-alt hover-green"
+          (click)="onDelete(line.id)"
+          *ngIf="hasPermissionToEdit()"
+        ></i>
+      </h1>
+      <h3>
+        par
+        <a
+          href="mailto:{{ line.mail }}?subject=Funtrain.net - {{ line.nom }}"
+          target="_blank"
+          >{{ line.auteur }}</a
+        >
+      </h3>
+    </div>
+  </div>
+  <div style="width: 70vw">
+    <app-carousel [images]="line.images"></app-carousel>
+    <h2 class="text-light">Description de la ligne</h2>
+    <div class="row">
+      <div class="col-md-9">
+        <p
+          class="longtext text-light"
+          [innerHTML]="line.description | html"
+        ></p>
+      </div>
+      <div class="col-md-3">
+        <!-- <ng-adsense></ng-adsense> -->
+      </div>
+    </div>
+  </div>
+
+  <ul class="list-group list-group-flush text-dark">
+    <li
+      class="list-group-item d-flex justify-content-between"
+      *ngFor="let link of line.file"
+    >
+      <span>{{ getDownloadLocation(link) }}</span>
+      <a class="btn btn-success" [href]="link" [download]="link" target="_blank"
+        >Télécharger</a
+      >
+    </li>
+  </ul>
+</section>

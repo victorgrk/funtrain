@@ -1,0 +1,28 @@
+<main class="w-100">
+  <section>
+    <h1>Foire aux question</h1>
+    <div class="filter">
+      <select class="form-control" [(ngModel)]="softFilter">
+        <option value="0">Tous les Logiciels</option>
+        <option [value]="e.id" *ngFor="let e of softwares$ | async">
+          {{ e.name }}
+        </option>
+      </select>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <hr />
+      <div
+        *ngFor="
+          let faq of data$ | async | filter: ',' + softFilter + ',';
+          let last = last
+        "
+      >
+        <h3>{{ faq.question }}</h3>
+        <p>{{ faq.answer }}</p>
+        <hr *ngIf="!last" />
+      </div>
+    </div>
+  </section>
+</main>

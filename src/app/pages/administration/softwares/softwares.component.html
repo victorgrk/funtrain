@@ -1,0 +1,35 @@
+<h1 class="mb-1">Logiciels</h1>
+<form [formGroup]="fg" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="nom">Nom du logiciel</label>
+    <input id="nom" class="form-control" type="text" formControlName="name" />
+  </div>
+  <div class="btn-group" role="group" aria-label="Button group">
+    <button class="btn btn-danger" type="reset" (click)="setAddAction()">
+      Réinitialiser
+    </button>
+    <button class="btn btn-success" type="submit" [disabled]="fg.invalid">
+      {{ id ? "Modifier" : "Ajouter" }} {{ fg.get("name").value }}
+    </button>
+  </div>
+</form>
+<ul class="list-group">
+  <li
+    class="list-group-item d-flex justify-content-between"
+    *ngFor="let data of softwares$ | async | namesort: '-name'"
+  >
+    <span class="text-dark">{{ data.name | uppercase }}</span>
+    <div class="btn-group" role="group" aria-label="Action">
+      <button class="btn btn-danger" type="button" (click)="onDelete(data.id)">
+        Supprimer
+      </button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        (click)="setUpdateAction(data)"
+      >
+        Modifier
+      </button>
+    </div>
+  </li>
+</ul>
