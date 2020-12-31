@@ -1,0 +1,22 @@
+<div class="autocomplete">
+  <input
+    type="text"
+    #searchInput
+    class="form-control bg-dark"
+    placeholder="Recherche sur le site..."
+    (keydown.arrowup)="changeActive($event)"
+    (keydown.arrowdown)="changeActive($event)"
+  />
+  <div class="autocomplete-items">
+    <div
+      *ngFor="let result of results$ | async; let i = index"
+      (click)="submit($event, result.ref)"
+      (keydown.enter)="submit($event, result.ref)"
+      (keydown.arrowup)="changeActive($event)"
+      (keydown.arrowdown)="changeActive($event)"
+      [class.autocomplete-active]="active === i"
+    >
+      {{ result.nom }}
+    </div>
+  </div>
+</div>

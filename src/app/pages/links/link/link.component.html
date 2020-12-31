@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card text-white bg-dark h-100">
   <div class="card-header">
     {{ link.title }}
 
@@ -17,8 +17,10 @@
     <p class="card-text">
       {{ link.description }}
     </p>
-    <a [href]="link.links" target="_blank" class="btn btn-primary"
-      >Aller sur le site</a
-    >
+    <div class="w-100 text-center">
+      <a [href]="link.links" target="_blank" class="btn btn-primary"
+        >Aller sur le site</a
+      >
+    </div>
   </div>
 </div>

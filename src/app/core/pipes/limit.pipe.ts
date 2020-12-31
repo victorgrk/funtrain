@@ -6,6 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class LimitPipe implements PipeTransform {
 
   transform(value: any[], args: number): any[] {
+
     const start = (Math.max(args - 1, 0)) * 12;
     return value.slice(start, start + 12);
   }

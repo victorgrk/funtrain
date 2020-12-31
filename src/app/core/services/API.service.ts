@@ -3,8 +3,7 @@ import { HttpClient, HttpHeaders, HttpEventType } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { AuthentificationService } from './Authentification.service';
 import { Observable } from 'rxjs';
-import { FormGroup } from '@angular/forms';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,19 +20,19 @@ export class APIService {
   });
 
   post<T>(url: string, body: any): Observable<T> {
-    return this.http.post<T>(`${environment.apiUrl}${url}/`, body, { headers: this.headers });
+    return this.http.post<T>(`${environment.apiUrl}${url}/`, body, { headers: this.headers }).pipe(take(1));
   }
   get<G>(url: string): Observable<G> {
-    return this.http.get<G>(`${environment.apiUrl}${url}/`, { headers: this.headers });
+    return this.http.get<G>(`${environment.apiUrl}${url}/`, { headers: this.headers }).pipe(take(1));
   }
   put<P>(url: string, body: any): Observable<P> {
-    return this.http.put<P>(`${environment.apiUrl}${url}/`, body, { headers: this.headers });
+    return this.http.put<P>(`${environment.apiUrl}${url}/`, body, { headers: this.headers }).pipe(take(1));
   }
   delete<D>(url: string, id: string): Observable<D> {
-    return this.http.delete<D>(`${environment.apiUrl}${url}/${id}/`, { headers: this.headers });
+    return this.http.delete<D>(`${environment.apiUrl}${url}/${id}/`, { headers: this.headers }).pipe(take(1));
   }
   patch<P>(url: string, body: any): Observable<P> {
-    return this.http.patch<P>(`${environment.apiUrl}${url}/`, body, { headers: this.headers });
+    return this.http.patch<P>(`${environment.apiUrl}${url}/`, body, { headers: this.headers }).pipe(take(1));
   }
   uploadFile(file: File): Observable<{ status: string, current?: number, body?: string }> {
     const fd = new FormData();

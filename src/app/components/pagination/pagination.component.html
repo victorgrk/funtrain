@@ -1,0 +1,24 @@
+<div class="btn-group">
+  <button
+    class="btn btn-dark"
+    (click)="minusOne()"
+    [disabled]="currentPage === 1"
+  >
+    Précédent
+  </button>
+  <button
+    class="btn btn-dark"
+    *ngFor="let i of generateArray()"
+    (click)="set(i)"
+    [class.active]="currentPage === i"
+  >
+    {{ i }}
+  </button>
+  <button
+    class="btn btn-dark"
+    (click)="plusOne()"
+    [disabled]="currentPage === getPageNumber()"
+  >
+    Suivant
+  </button>
+</div>

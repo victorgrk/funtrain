@@ -1,8 +1,15 @@
 <main class="w-100">
-  <section>
-    <h1>Foire aux question</h1>
-    <div class="filter">
-      <select class="form-control" [(ngModel)]="softFilter">
+  <section class="mw-100">
+    <h1>
+      Foire aux question
+      <i
+        class="fas fa-plus-circle hover-green"
+        (click)="onCreate()"
+        *ngIf="auth"
+      ></i>
+    </h1>
+    <div class="filter w-100">
+      <select class="form-control bg-dark" [(ngModel)]="softFilter">
         <option value="0">Tous les Logiciels</option>
         <option [value]="e.id" *ngFor="let e of softwares$ | async">
           {{ e.name }}
@@ -19,8 +26,22 @@
           let last = last
         "
       >
-        <h3>{{ faq.question }}</h3>
-        <p>{{ faq.answer }}</p>
+        <h3 class="shimmer" *ngIf="!faq"></h3>
+        <h3 *ngIf="faq">
+          {{ faq.question }}
+          <i
+            class="fas fa-edit hover-green"
+            (click)="onUpdate(faq)"
+            *ngIf="auth"
+          ></i>
+          &nbsp;<i
+            class="fas fa-trash-alt hover-green"
+            (click)="onDelete(faq.id)"
+            *ngIf="auth"
+          ></i>
+        </h3>
+        <p class="shimmer" *ngIf="!faq"></p>
+        <p *ngIf="faq">{{ faq.answer }}</p>
         <hr *ngIf="!last" />
       </div>
     </div>

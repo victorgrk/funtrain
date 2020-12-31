@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/core/services/toastr.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { APIService } from 'src/app/core/services/API.service';
@@ -52,7 +52,7 @@ export class SoftwaresComponent implements OnInit {
             e.push(buffer)
             return e
           }))
-          this.$toastr.success("Logiciel ajouté !");
+          this.$toastr.success("Logiciel ajouté !", 'Logiciels');
           this.fg.reset();
         }
       );
@@ -67,7 +67,7 @@ export class SoftwaresComponent implements OnInit {
           e[index] = buffer
           return e
         }))
-        this.$toastr.success("Logiciel modifié !")
+        this.$toastr.success("Logiciel modifié !", 'Logiciels')
         delete this.id
         this.fg.reset()
       }
@@ -81,7 +81,7 @@ export class SoftwaresComponent implements OnInit {
     }
     this.$api.delete<any>('sowftwares', id).subscribe(() => {
       this.softwares$ = this.softwares$.pipe(map((e: any[]) => e.filter(i => i.id !== id)))
-      this.$toastr.success("Logiciel supprimé !");
+      this.$toastr.success("Logiciel supprimé !", 'Logiciels');
     }
     );
   }

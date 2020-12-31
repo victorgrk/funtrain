@@ -7,6 +7,7 @@ import { LinkComponent } from './link/link.component';
 import { LinkFormComponent } from './link-form/link-form.component';
 import { CoreModule } from 'src/app/core/core.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     CommonModule,
     LinksRoutingModule,
     CoreModule,
+    ReactiveFormsModule,
     ModalModule.forRoot()
   ]
 })

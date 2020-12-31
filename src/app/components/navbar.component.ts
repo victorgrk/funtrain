@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
   selector: 'app-navbar',
   template: `
     <nav class="navbar navbar-expand-md bg-dark navbar-dark text-light">
-    <a href="javascript:void(0)" class="navbar-brand" style="width: 35%;" (click)="navigate('/')">
+    <a href="javascript:;" class="navbar-brand" (click)="navigate('/')">
       <img
         src="assets/images/logotype-Texte.svg"
         class="d-inline-block align-top"
@@ -24,7 +24,7 @@ import { Router } from '@angular/router';
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <div class="d-flex justify-content-end">
+      <div class="d-flex justify-content-start">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a href="javascript:void(0)" (click)="navigate('/')" class="nav-link"
@@ -48,7 +48,22 @@ import { Router } from '@angular/router';
         </li>
       </ul></div>
     </div>
-  </nav>`
+  </nav>`,
+  styles: [`
+    .navbar-brand { 
+      width: 35%;
+    }
+    @media screen and (max-width: 768px) {
+      .navbar-brand {
+        width: 260px !important;
+      }
+    }
+    @media screen and (max-width: 365px) {
+      .navbar-brand {
+        width: 220px !important;
+      }
+    }
+  `]
 })
 export class NavbarComponent {
   constructor(private $router: Router) { }

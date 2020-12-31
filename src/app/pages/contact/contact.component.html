@@ -1,1 +1,67 @@
-<p>contact works!</p>
+<h1>Formulaire de contact</h1>
+<form [formGroup]="fg" (ngSubmit)="onSubmit()" class="contact-form-box">
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="firstname">Prénom</label>
+      <input
+        type="text"
+        class="form-control"
+        id="firstname"
+        formControlName="firstName"
+      />
+    </div>
+    <div class="form-group col-md-6">
+      <label for="lastname">Nom</label>
+      <input
+        type="text"
+        class="form-control"
+        id="lastname"
+        formControlName="lastName"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-12">
+      <label for="mail">Adresse e-mail</label>
+      <input
+        type="mail"
+        class="form-control"
+        id="mail"
+        formControlName="mail"
+      />
+    </div>
+  </div>
+  <div class="form-gro">
+    <label for="title">Titre</label>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="titre"
+      id="title"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="message">Contenu du message</label>
+    <textarea
+      formControlName="message"
+      id="message"
+      cols="30"
+      rows="10"
+      class="form-control"
+    ></textarea>
+  </div>
+  <div
+    class="g-recaptcha"
+    data-sitekey="6LfD658UAAAAADBP3z-jJ97T-HzcN2j6fmoYH7H4"
+    data-size="invisible"
+    data-callback="formSubmit"
+  ></div>
+  <button
+    type="submit"
+    class="btn btn-lg btn-block btn-success"
+    [disabled]="fg.invalid"
+  >
+    Envoyer ce formulaire !
+  </button>
+</form>

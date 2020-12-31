@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/core/services/toastr.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { APIService } from 'src/app/core/services/API.service';
@@ -68,7 +68,7 @@ export class UsersComponent implements OnInit {
             e.push(buffer)
             return e
           }))
-          this.$toastr.success("Utilisateur ajouté !");
+          this.$toastr.success("Utilisateur ajouté !", 'Utilisateurs');
           this.fg.reset();
         }
       );
@@ -85,7 +85,7 @@ export class UsersComponent implements OnInit {
           e[index] = buffer
           return e
         }))
-        this.$toastr.success("Utilisateur modifié !")
+        this.$toastr.success("Utilisateur modifié !", 'Utilisateurs')
         delete this.id
         this.fg.reset()
       }
@@ -99,7 +99,7 @@ export class UsersComponent implements OnInit {
     }
     this.$api.delete<any>(this.type, id).subscribe(() => {
       this.users$ = this.users$.pipe(map((e: any[]) => e.filter(i => i.id !== id)))
-      this.$toastr.success("Utilisateur supprimé !");
+      this.$toastr.success("Utilisateur supprimé !", 'Utilisateurs');
     }
     );
   }

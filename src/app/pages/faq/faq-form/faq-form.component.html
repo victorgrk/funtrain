@@ -1,7 +1,7 @@
 <form [formGroup]="fg" (ngSubmit)="onSubmit()">
   <div class="modal-header">
     <h4 class="modal-title pull-left">
-      {{ link?.id ? "Modifier" : "Ajouter" }} un lien
+      {{ faq?.id ? "Modifier" : "Ajouter" }} une question
     </h4>
     <button
       type="button"
@@ -14,36 +14,35 @@
   </div>
   <div class="modal-body">
     <div class="form-group">
-      <label for="title">Nom du site</label>
+      <label for="title">Quelle est votre question ?</label>
       <input
         id="title"
         class="form-control"
         type="text"
-        formControlName="title"
+        formControlName="question"
       />
     </div>
     <div class="form-group">
-      <label for="description">Description du site</label>
+      <label for="answer">Réponse à la question</label>
       <textarea
-        id="description"
+        id="answer"
         class="form-control"
         type="text"
-        formControlName="description"
+        formControlName="answer"
       ></textarea>
     </div>
     <div class="form-group">
-      <label for="link">Adresse du site</label>
-      <input
-        id="link"
-        class="form-control"
-        type="text"
-        formControlName="links"
-      />
+      <label for="soft">Cette question concerne le logiciel :</label>
+      <select id="soft" class="form-control" formControlName="softID">
+        <option [value]="e.id" *ngFor="let e of softwares$ | async">
+          {{ e.name }}
+        </option>
+      </select>
     </div>
   </div>
   <div class="modal-footer">
     <button type="submit" class="btn btn-default">
-      {{ link?.id ? "Modifier" : "Ajouter" }}
+      {{ faq?.id ? "Modifier" : "Ajouter" }}
     </button>
   </div>
 </form>

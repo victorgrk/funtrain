@@ -15,6 +15,7 @@ import { ToastrService } from './services/toastr.service';
 import { HTTPToastrInterceptor } from './services/httpinterceptor.service';
 import { ToastrModule } from 'ngx-toastr';
 import { NamesortPipe } from './pipes/namesort.pipe';
+import { FilesizePipe } from './pipes/filesize.pipe';
 
 const COMPONENTS = [
   HtmlPipe,
@@ -24,7 +25,8 @@ const COMPONENTS = [
   ShortPipe,
   SoftFilterPipe,
   SortPipe,
-  NamesortPipe
+  NamesortPipe,
+  FilesizePipe
 ]
 
 @NgModule({

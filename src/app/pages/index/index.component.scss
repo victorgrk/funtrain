@@ -1,0 +1,35 @@
+.texts-container {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.fb {
+  width: 340px !important;
+  &::before {
+    content: "";
+    width: 340px;
+    height: 130px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #666;
+    background-image: linear-gradient(
+      to right,
+      #666 0%,
+      #777 20%,
+      #666 40%,
+      #666 100%
+    );
+    background-repeat: no-repeat;
+    display: inline-block;
+    animation: placeholderShimmer 1s forwards infinite linear;
+  }
+}
+
+.ad1 {
+  width: 250px !important;
+  height: 250px !important;
+}

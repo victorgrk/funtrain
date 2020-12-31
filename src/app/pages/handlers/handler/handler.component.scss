@@ -1,0 +1,11 @@
+li:hover:not(.btn) {
+  filter: brightness(90%) contrast(70%);
+}
+li {
+  transition: all 0.3s ease-out;
+  height: 70px !important;
+}
+.filesize {
+  font-size: 0.7rem;
+  color: #888;
+}

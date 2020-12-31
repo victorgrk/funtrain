@@ -24,6 +24,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     ReactiveFormsModule,
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
-    TabsModule.forRoot()]
+    TabsModule.forRoot(),
+  ]
 })
 export class LinesModule { }

@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { APIService } from 'src/app/core/services/API.service';
+import { ToastrService } from 'src/app/core/services/toastr.service';
 
 @Component({
   selector: 'app-line-form',
@@ -20,7 +21,7 @@ export class LineFormComponent implements OnInit {
 
   constructor(
     private $api: APIService,
-    public bsModalRef: BsModalRef
+    public bsModalRef: BsModalRef, private $toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -28,7 +29,9 @@ export class LineFormComponent implements OnInit {
     this.softwares$ = this.$api.get('softwares').pipe<any[]>(take<any[]>(1))
     this.authors$ = this.$api.get('authors').pipe<any[]>(take<any[]>(1))
     if (this.id) {
-      this.$api.get(`lines/${this.id}`).subscribe(this.updateValues)
+      this.$api.get(`lines/${this.id}`).pipe(map((e: any) => {
+        return { ...e, images: e.images.map((i: any) => i.url), file: e.file.map((f: any) => f.url) }
+      })).subscribe(this.updateValues)
     }
   }
 
@@ -90,13 +93,13 @@ export class LineFormComponent implements OnInit {
       values.id = String(this.id)
       return this.$api.put<any>("lines", values).subscribe(
         (e) => {
-          // success
+          this.$toastr.success('La ligne a bien été modifiée', 'Ligne')
           this.bsModalRef.hide()
         }
       );
     } else {
       return this.$api.post<any>("lines", values).subscribe((e) => {
-        //Sucess
+        this.$toastr.success('La ligne a bien été ajoutée', 'Ligne')
         this.bsModalRef.hide()
       })
     }

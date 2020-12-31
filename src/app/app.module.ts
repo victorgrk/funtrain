@@ -9,6 +9,8 @@ import { UIModule } from './components/ui.module';
 
 import { AppComponent } from './app.component';
 import { IndexComponent } from './pages/index/index.component';
+import { FacebookModule } from 'ngx-facebook';
+import { SearchComponent } from './pages/index/search/search.component';
 
 @NgModule({
   imports: [
@@ -21,13 +23,16 @@ import { IndexComponent } from './pages/index/index.component';
       adClient: "ca-pub-9559903561846592",
       adSlot: "4457937979",
       display: "inline-block",
-      width: 300,
-      height: 250
-    })
+      adFormat: "rectangle",
+      width: 240,
+      height: 240
+    }),
+    FacebookModule.forRoot()
   ],
   declarations: [
     AppComponent,
     IndexComponent,
+    SearchComponent,
   ],
   bootstrap: [AppComponent]
 })

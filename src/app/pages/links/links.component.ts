@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { APIService } from 'src/app/core/services/API.service';
 import { AuthentificationService } from 'src/app/core/services/Authentification.service';
+import { ToastrService } from 'src/app/core/services/toastr.service';
 import { LinkFormComponent } from './link-form/link-form.component';
 
 @Component({
@@ -18,7 +18,7 @@ export class LinksComponent implements OnInit {
   constructor(
     private api: APIService,
     private modalService: BsModalService,
-    private $auth: AuthentificationService
+    private $auth: AuthentificationService, private $toastr: ToastrService
   ) { }
   get auth() {
     return this.$auth.hasPermissionToEdit('administration')
@@ -36,7 +36,10 @@ export class LinksComponent implements OnInit {
     if (!confirm('Voulez vous supprimer ce lien ?')) {
       return;
     }
-    this.links$ = this.api.delete('links', String(id)).pipe(switchMap(() => this.api.get('links')))
+    this.api.delete('links', String(id)).subscribe(() => {
+      this.$toastr.success('La ligne a bien été supprimée', 'Lien')
+      this.links$ = this.api.get('links')
+    })
   }
   onCreate() {
     this.modalService.show(LinkFormComponent)

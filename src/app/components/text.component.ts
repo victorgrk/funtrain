@@ -1,7 +1,12 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { AuthentificationService } from 'src/app/core/services/Authentification.service'
 import { APIService } from 'src/app/core/services/API.service'
-import { Subscription } from 'rxjs'
+import { Observable } from 'rxjs';
+import { startWith, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+
+declare var window: any;
+declare var adsbygoogle: any;
 
 @Component({
   selector: 'app-text',
@@ -14,24 +19,22 @@ import { Subscription } from 'rxjs'
       >
         <i class="fas fa-wrench"></i>
       </button>
-      <div [innerHTML]="text | html"></div>
+      <div [innerHTML]="text$ | async | html"></div>
     </div>
     <div *ngIf="isInEditorMode">
-      <textarea [(ngModel)]="copyText"></textarea>
+      <textarea [(ngModel)]="copyText" class="form-control"></textarea>
       <div class="d-flex justify-content-end">
         <button
-          class="mx-2 mt-3"
-          color="warn"
-          mat-raised-button
+          class="mx-2 mt-3 btn btn-secondary"
           (click)="dismiss()"
           aria-label="Fermer"
         >
           Annuler
         </button>
         <button
-          class="mt-3"
-          mat-raised-button
+          class="mt-3 btn btn-primary"
           type="submit"
+          [disabled]="copyText === ''"
           (click)="onSubmit()"
         >
           Mettre à jour
@@ -44,8 +47,6 @@ import { Subscription } from 'rxjs'
       .settings-button {
         position: absolute;
         right: -16px;
-        width: 24px;
-        height: 24px;
         top: 0;
         color: #000;
         border-radius: 25%;
@@ -53,6 +54,7 @@ import { Subscription } from 'rxjs'
       }
       .relative {
         position: relative;
+        width: 100%;
       }
     `,
   ],
@@ -60,8 +62,9 @@ import { Subscription } from 'rxjs'
 export class TextComponent implements OnInit {
   @Input() private location: string
   isInEditorMode = false
-  text = ``
   copyText = ``
+
+  text$: Observable<string>
 
   isAuth() {
     return this.$auth.hasPermissionToEdit('administration')
@@ -73,22 +76,34 @@ export class TextComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.$api.get<any>(`texts/${this.location}`).subscribe((e) => {
-      this.text = e?.text
-      this.copyText = this.text
-    })
+    this.text$ = this.$api.get<string>(`texts/${this.location}`).pipe(
+      startWith(''),
+      tap((e: string) => this.copyText = e),
+      tap((e: string) => {
+        if (e.includes(
+          `<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>`)) {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      })
+    )
   }
   onSubmit() {
-    this.$api
-      .put('texts', { location: this.location, text: this.copyText })
-      .subscribe((e: any) => {
-        this.text = e.text
-        this.copyText = e.text.split('<br/>').join('\n')
+    console.log(this)
+    this.text$ = this.$api.put<string>(`texts/${this.location}`, { location: this.location, text: this.copyText }).pipe(
+      startWith(''),
+      tap((e: string) => this.copyText = e.split('<br/>').join('\n')),
+      tap((e: string) => {
+        console.log(e);
         this.isInEditorMode = false
+        if (e.includes(
+          `<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>`)) {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }
       })
+    )
   }
   dismiss() {
     this.isInEditorMode = !this.isInEditorMode
-    this.text = this.copyText
+    this.text$ = of(this.copyText)
   }
 }

@@ -3,4 +3,9 @@ li:hover:not(.btn) {
 }
 li {
   transition: all 0.3s ease-out;
+  height: 70px !important;
+}
+.filesize {
+  font-size: 0.7rem;
+  color: #888;
 }

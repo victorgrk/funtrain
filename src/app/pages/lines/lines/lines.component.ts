@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LineFormComponent } from '../line-form/line-form.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { AuthentificationService } from 'src/app/core/services/Authentification.service';
+import { startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lines',
@@ -13,7 +14,7 @@ import { AuthentificationService } from 'src/app/core/services/Authentification.
 })
 export class LinesComponent implements OnInit {
 
-  lines$: Observable<any>
+  lines$: Observable<any[]>
   softwares$: Observable<any>
   region: string
   search: string = ''
@@ -23,22 +24,24 @@ export class LinesComponent implements OnInit {
   constructor(
     private $api: APIService,
     private $route: ActivatedRoute,
-    private $router: Router, private auth: AuthentificationService, private modalService: BsModalService
+    private $router: Router,
+    private auth: AuthentificationService,
+    private modalService: BsModalService
   ) { }
 
   ngOnInit() {
     this.$route.params.forEach(e => this.region = e.region)
-    this.lines$ = this.$api.get('lines')
+    this.lines$ = this.$api.get<any[]>('lines').pipe(
+      startWith(Array(8).fill(null))
+    )
     this.softwares$ = this.$api.get('softwares')
   }
   resetFilter() {
-    this.soft = ''
-    this.search = ''
-    this.$router.navigateByUrl('/lines/all')
+    this.$router.navigateByUrl('/lines/list/all')
   }
 
   trackBy(_, value) {
-    return value.id
+    return value?.id
   }
   openModal() {
     this.modalService.show(LineFormComponent)

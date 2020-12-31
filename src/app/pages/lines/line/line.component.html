@@ -3,15 +3,6 @@
     <div class="col-md-12">
       <h1>
         {{ line.nom }} (v{{ line.version }})
-        <div
-          class="fb-like"
-          data-href="https://www.facebook.com/funtrain.net"
-          data-layout="button_count"
-          data-action="like"
-          data-size="large"
-          data-show-faces="false"
-          data-share="true"
-        ></div>
         <i
           class="fas fa-edit hover-green"
           (click)="openModal(line.id)"
@@ -33,31 +24,55 @@
       </h3>
     </div>
   </div>
-  <div style="width: 70vw">
-    <app-carousel [images]="line.images"></app-carousel>
-    <h2 class="text-light">Description de la ligne</h2>
-    <div class="row">
-      <div class="col-md-9">
-        <p
-          class="longtext text-light"
-          [innerHTML]="line.description | html"
-        ></p>
-      </div>
-      <div class="col-md-3">
-        <!-- <ng-adsense></ng-adsense> -->
+  <div class="w-100 d-flex justify-content-center">
+    <div style="width: 70vw">
+      <app-carousel [images]="line.images"></app-carousel>
+      <h2 class="text-light">Description de la ligne</h2>
+      <div class="row">
+        <div class="col-md-9">
+          <p
+            class="longtext text-light"
+            [innerHTML]="line.description | html"
+          ></p>
+        </div>
+        <div class="col-md-3">
+          <app-text location="pubLine"></app-text>
+        </div>
       </div>
     </div>
   </div>
-
-  <ul class="list-group list-group-flush text-dark">
+  <a
+    class="btn btn-primary btn-lg w-100 my-2"
+    [href]="line.fullDownloadLink"
+    [download]="line.nom + '.zip'"
+    target="_blank"
+  >
+    <i class="fa fa-download" aria-hidden="true"></i>&nbsp; Télécharger tous les
+    fichiers de cette ligne au format zip ({{ line.archiveSize | filesize }})
+  </a>
+  <ul class="list-group list-group-flush mb-3">
     <li
-      class="list-group-item d-flex justify-content-between"
+      class="list-group-item bg-dark text-light d-flex justify-content-between"
       *ngFor="let link of line.file"
     >
-      <span>{{ getDownloadLocation(link) }}</span>
-      <a class="btn btn-success" [href]="link" [download]="link" target="_blank"
-        >Télécharger</a
-      >
+      <div>
+        <span class="filename">{{ link.filename | short: 70 }}</span>
+        <br />
+        <span class="filesize"
+          >{{ link.size | filesize }} ajouté le
+          {{ link.date | date: "dd/MM/yyyy" }}</span
+        >
+      </div>
+      <div>
+        <a
+          class="btn btn-primary"
+          [href]="link.url"
+          [download]="link.filename"
+          target="_blank"
+        >
+          <i class="fa fa-download" aria-hidden="true"> </i>
+        </a>
+      </div>
     </li>
   </ul>
 </section>

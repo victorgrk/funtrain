@@ -15,6 +15,7 @@ import { NavbarComponent } from './navbar.component';
 import { MapComponent } from './map/map.component';
 import { LegalComponent } from './legal.component';
 import { CardComponent } from './card.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 
 const COMPONENTS = [
@@ -28,6 +29,7 @@ const COMPONENTS = [
   CookieComponent,
   NavbarComponent,
   MapComponent,
+  PaginationComponent
 ]
 
 @NgModule({

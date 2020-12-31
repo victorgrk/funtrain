@@ -2,8 +2,24 @@
   <div class="col-md-12">
     <h1>
       Sites partenaires
-      <i class="fas fa-edit hover-green" (click)="onCreate()" *ngIf="auth"></i>
-      &nbsp;<i class="fas fa-trash-alt hover-green" *ngIf="auth"></i>
+      <i
+        class="fas fa-plus-circle hover-green"
+        (click)="onCreate()"
+        *ngIf="auth"
+      ></i>
     </h1>
   </div>
 </div>
+<section>
+  <div class="container">
+    <div class="grid">
+      <app-link
+        class="link"
+        *ngFor="let link of links$ | async"
+        [link]="link"
+        (update)="onUpdate($event)"
+        (delete)="onDelete($event)"
+      ></app-link>
+    </div>
+  </div>
+</section>

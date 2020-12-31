@@ -9,7 +9,10 @@ export class FilterPipe implements PipeTransform {
     const software = Number(args.split(',')[1])
     const region = args.split(',')[2]
     if (!tab) {
-      return;
+      return [];
+    }
+    if (tab.every(e => e === null)) {
+      return tab;
     }
     let buffer: any[] = tab;
     if (region && region !== 'all') {

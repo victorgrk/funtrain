@@ -5,17 +5,21 @@ import { FaqRoutingModule } from './faq-routing.module';
 import { FaqComponent } from './faq/faq.component';
 import { UIModule } from 'src/app/components/ui.module';
 import { CoreModule } from 'src/app/core/core.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FaqFormComponent } from './faq-form/faq-form.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 @NgModule({
-  declarations: [FaqComponent],
+  declarations: [FaqComponent, FaqFormComponent],
   imports: [
     CommonModule,
     FaqRoutingModule,
     UIModule,
     CoreModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    ModalModule.forRoot(),
   ]
 })
 export class FaqModule { }

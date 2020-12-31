@@ -19,6 +19,7 @@ export class HTTPToastrInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((error) => {
         this.$toastr.error(error)
+        console.error(error);
         return throwError(error.error)
       })
     )

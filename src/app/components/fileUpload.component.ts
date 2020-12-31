@@ -15,7 +15,7 @@ import { APIService } from '../core/services/API.service';
         <i class="fas {{icon || 'fa-file-alt' }} fa-2x"></i>
       </span>
       <span class="text" *ngIf="fileStatus !== 'progress'">
-        {{ fileName ? fileName : 'Aucun fichier Sélectionné'}}
+        {{ fileName ? (fileName | short: 38) : 'Aucun fichier Sélectionné'}}
       </span>
       <div class="progress" *ngIf="fileStatus === 'progress'">
         <div
@@ -111,13 +111,12 @@ export class FileUploadComponent implements ControlValueAccessor {
       this.fileStatus = 'error'
     })
   }
-  writeValue(value: string): void {
+  writeValue(value: any): void {
 
     if (!value) {
       value = ''
     }
     this.originalFileName = value.replace(environment.apiUrl, '')
-    console.log(this.originalFileName)
     this.fileName = this.getFilename(value)
 
   }

@@ -1,63 +1,80 @@
-<section *ngIf="data$ | async as line">
+<section *ngIf="data$ | async as plugin">
   <div class="row">
     <div class="col-md-12">
       <h1>
-        {{ line.nom }} (v{{ line.version }})
-        <div
-          class="fb-like"
-          data-href="https://www.facebook.com/funtrain.net"
-          data-layout="button_count"
-          data-action="like"
-          data-size="large"
-          data-show-faces="false"
-          data-share="true"
-        ></div>
+        {{ plugin.nom }} (v{{ plugin.version }})
         <i
           class="fas fa-edit hover-green"
-          (click)="openModal(line.id)"
+          (click)="openModal(plugin.id)"
           *ngIf="hasPermissionToEdit()"
         ></i>
         &nbsp;<i
           class="fas fa-trash-alt hover-green"
-          (click)="onDelete(line.id)"
+          (click)="onDelete(plugin.id)"
           *ngIf="hasPermissionToEdit()"
         ></i>
       </h1>
       <h3>
         par
         <a
-          href="mailto:{{ line.mail }}?subject=Funtrain.net - {{ line.nom }}"
+          href="mailto:{{ plugin.mail }}?subject=Funtrain.net - {{
+            plugin.nom
+          }}"
           target="_blank"
-          >{{ line.auteur }}</a
+          >{{ plugin.auteur }}</a
         >
       </h3>
     </div>
   </div>
-  <div style="width: 70vw">
-    <app-carousel [images]="line.images"></app-carousel>
-    <h2 class="text-light">Description de la ligne</h2>
-    <div class="row">
-      <div class="col-md-9">
-        <p
-          class="longtext text-light"
-          [innerHTML]="line.description | html"
-        ></p>
-      </div>
-      <div class="col-md-3">
-        <!-- <ng-adsense></ng-adsense> -->
+  <div class="w-100 d-flex justify-content-center">
+    <div style="width: 70vw">
+      <app-carousel [images]="plugin.images"></app-carousel>
+      <h2 class="text-light">Description de la ligne</h2>
+      <div class="row">
+        <div class="col-md-9">
+          <p
+            class="longtext text-light"
+            [innerHTML]="plugin.description | html"
+          ></p>
+        </div>
+        <div class="col-md-3">
+          <app-text location="pubAddon"></app-text>
+        </div>
       </div>
     </div>
   </div>
-
-  <ul class="list-group list-group-flush text-dark">
+  <a
+    class="btn btn-primary btn-lg w-100 my-2"
+    [href]="plugin.fullDownloadLink"
+    [download]="plugin.nom + '.zip'"
+    target="_blank"
+  >
+    <i class="fa fa-download" aria-hidden="true"></i>&nbsp; Télécharger tous les
+    fichiers de ce plugin au format zip ({{ plugin.archiveSize | filesize }})
+  </a>
+  <ul class="list-group list-group-flush mb-3">
     <li
-      class="list-group-item d-flex justify-content-between"
-      *ngFor="let link of line.file"
+      class="list-group-item bg-dark text-light d-flex justify-content-between"
+      *ngFor="let link of plugin.file"
     >
-      <span>{{ getDownloadLocation(link) }}</span>
-      <a class="btn btn-success" [href]="link" [download]="link" target="_blank"
-        >Télécharger</a
-      >
+      <div>
+        <span class="filename">{{ link.filename | short: 70 }}</span>
+        <br />
+        <span class="filesize"
+          >{{ link.size | filesize }} ajouté le
+          {{ link.date | date: "dd/MM/yyyy" }}</span
+        >
+      </div>
+      <div>
+        <a
+          class="btn btn-primary"
+          [href]="link.url"
+          [download]="link.filename"
+          target="_blank"
+        >
+          <i class="fa fa-download" aria-hidden="true"> </i>
+        </a>
+      </div>
     </li>
   </ul>
 </section>
