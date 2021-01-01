@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { from, fromEvent, iif, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { APIService } from 'src/app/core/services/API.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { APIService } from 'src/app/core/services/API.service';
 })
 export class SearchComponent implements AfterViewInit {
 
-  @ViewChild('searchInput') search: ElementRef;
+  @ViewChild('searchInput') search: ElementRef<HTMLInputElement>;
 
   results$: Observable<any[]>
   resultSize: number
@@ -24,8 +24,7 @@ export class SearchComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.results$ = fromEvent(this.search.nativeElement, 'keydown').pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
+      debounceTime(250),
       map((e: any) => e.target.value.toLowerCase()),
       startWith(''),
       switchMap((e: string) => iif(() => e !== '', this.$api.get<any[]>(`search/${e}`), from([]))),

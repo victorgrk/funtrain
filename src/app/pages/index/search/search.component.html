@@ -16,7 +16,8 @@
       (keydown.arrowdown)="changeActive($event)"
       [class.autocomplete-active]="active === i"
     >
-      {{ result.nom }}
+      <span *ngIf="result">{{ result.nom }} par {{ result.auteur }}</span>
+      <span class="shimmer" *ngIf="!result"></span>
     </div>
   </div>
 </div>

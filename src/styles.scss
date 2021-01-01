@@ -4,8 +4,12 @@
 
 // * {
 //   box-sizing: border-box;
-//   font-family: Helvetica;
+//
 // }
+
+body {
+  font-family: Helvetica, sans-serif, "Courier New", Courier, monospace !important;
+}
 
 input[type="text"],
 input[type="password"],
@@ -148,11 +152,13 @@ h1 {
 h2 {
   width: 100%;
   text-align: center;
+  font-family: Helvetica, sans-serif;
   font-size: 0.9em;
 }
 h3 {
   text-align: center;
   width: 100%;
+  font-family: Helvetica, sans-serif;
   font-size: 0.75em;
 }
 
@@ -176,7 +182,7 @@ tr.theader {
 }
 
 table {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
@@ -346,6 +352,9 @@ img {
 ul.list-group {
   max-height: 620px;
   overflow: auto;
+  &.no-Mh {
+    max-height: unset !important;
+  }
 }
 ul.list-group.long {
   max-height: 1575px !important;

@@ -46,6 +46,7 @@
     [href]="line.fullDownloadLink"
     [download]="line.nom + '.zip'"
     target="_blank"
+    *ngIf="line.archiveSize !== 0"
   >
     <i class="fa fa-download" aria-hidden="true"></i>&nbsp; Télécharger tous les
     fichiers de cette ligne au format zip ({{ line.archiveSize | filesize }})

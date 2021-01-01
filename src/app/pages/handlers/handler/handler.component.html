@@ -48,6 +48,7 @@
     [href]="plugin.fullDownloadLink"
     [download]="plugin.nom + '.zip'"
     target="_blank"
+    *ngIf="plugin.archiveSize !== 0"
   >
     <i class="fa fa-download" aria-hidden="true"></i>&nbsp; Télécharger tous les
     fichiers de ce plugin au format zip ({{ plugin.archiveSize | filesize }})
