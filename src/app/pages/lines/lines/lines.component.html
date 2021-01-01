@@ -49,7 +49,10 @@
       ></app-card>
     </div>
   </div>
-  <div class="d-flex flex-wrap justify-content-center my-2">
+  <div
+    class="d-flex flex-wrap justify-content-center my-2"
+    *ngIf="lines.length > 12"
+  >
     <app-pagination
       class="pagination"
       [size]="lines.length"

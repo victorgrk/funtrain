@@ -72,9 +72,10 @@ const routes: Routes = [
   imports: [
     QuicklinkModule,
     RouterModule.forRoot(routes, {
-      onSameUrlNavigation: 'reload',
-      preloadingStrategy: QuicklinkStrategy
-    })],
+    onSameUrlNavigation: 'reload',
+    preloadingStrategy: QuicklinkStrategy,
+    initialNavigation: 'enabled'
+})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

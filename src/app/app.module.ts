@@ -11,10 +11,12 @@ import { AppComponent } from './app.component';
 import { IndexComponent } from './pages/index/index.component';
 import { FacebookModule } from 'ngx-facebook';
 import { SearchComponent } from './pages/index/search/search.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
     CoreModule,
     UIModule,
@@ -27,7 +29,8 @@ import { SearchComponent } from './pages/index/search/search.component';
       width: 240,
       height: 240
     }),
-    FacebookModule.forRoot()
+    FacebookModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   declarations: [
     AppComponent,

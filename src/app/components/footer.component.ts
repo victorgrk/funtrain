@@ -1,4 +1,4 @@
-import { Component } from "@angular/core"
+import { ChangeDetectionStrategy, Component } from "@angular/core"
 import { AuthentificationService } from '../core/services/Authentification.service'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { LoginComponent } from './login.component'
@@ -8,7 +8,29 @@ import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-footer',
-  template: `<div
+  template: `
+    <div
+    class="alert hopla cookie alert-dismissible text-center"
+    *ngIf="!cookie()"
+    role="alert"
+  >
+    <div class="cookiealert-container">
+      <b>Ce site utilise des cookies</b>
+      Pour en savoir plus, n'hésitez pas à cliquer
+      <a href="javascript:void(0)" (click)="openModal('cookies')"
+        >ici</a
+      >.
+      <button
+        type="button"
+        class="btn btn-primary btn-sm"
+        (click)="acceptCookie()"
+        aria-label="Close"
+      >
+        Je suis d'accord
+      </button>
+    </div>
+  </div>
+  <div
     class="footer bg-dark text-light d-flex flex-wrap justify-content-around"
   >
     <a
@@ -28,27 +50,14 @@ import { Router } from '@angular/router'
     <a href="javascript:void(0)" (click)="openModal('terms')">Mentions légales</a>
     <a href="javascript:void(0)" (click)="goTo('/contact')">Contact</a>
   </div>
-    <div
-    class="alert alert-dismissible text-center"
-    *ngIf="!cookie()"
-    role="alert"
-  >
-    <div class="cookiealert-container">
-      <b>Ce site utilise des cookies</b>
-      Pour en savoir plus, n'hésitez pas à cliquer
-      <a href="javascript:void(0)" data-target="#cookie" data-toggle="modal"
-        >ici</a
-      >.
-      <button
-        type="button"
-        class="btn btn-primary btn-sm"
-        (click)="acceptCookie()"
-        aria-label="Close"
-      >
-        Je suis d'accord
-      </button>
-    </div>
-  </div>`
+`,
+  styles: [`
+  .cookie {
+    color: whitesmoke !important;
+    margin-bottom: 0 !important;
+  }
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent {
   constructor(

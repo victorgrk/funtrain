@@ -10,6 +10,6 @@ declare const window: any;
 export class IndexComponent implements OnInit {
   constructor() { }
   ngOnInit(): void {
-    window.FB.XFBML.parse();
+    window.FB?.XFBML?.parse();
   }
 }

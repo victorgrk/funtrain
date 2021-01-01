@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
       <img
         src="assets/images/logotype-Texte.svg"
         class="d-inline-block align-top"
-        alt=""
+        alt="Funtrain.net"
       />
     </a>
     <button
@@ -62,6 +62,9 @@ import { Router } from '@angular/router';
       .navbar-brand {
         width: 220px !important;
       }
+    }
+    .nav-link {
+      color: whitesmoke !important;
     }
   `]
 })

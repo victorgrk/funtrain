@@ -88,12 +88,10 @@ export class TextComponent implements OnInit {
     )
   }
   onSubmit() {
-    console.log(this)
     this.text$ = this.$api.put<string>(`texts/${this.location}`, { location: this.location, text: this.copyText }).pipe(
       startWith(''),
       tap((e: string) => this.copyText = e.split('<br/>').join('\n')),
       tap((e: string) => {
-        console.log(e);
         this.isInEditorMode = false
         if (e.includes(
           `<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>`)) {

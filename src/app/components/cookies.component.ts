@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -33,7 +33,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
       </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Fermer</button>
-    </div>`
+    </div>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CookieComponent {
   constructor(public bsModalRef: BsModalRef) { }

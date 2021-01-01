@@ -13,7 +13,7 @@ import { AuthentificationService } from '../core/services/Authentification.servi
     <div class="modal-body">
       <div class="imgcontainer">
         <img
-          src="assets/images/img_avatar.png"
+          src="assets/images/img_avatar.webp"
           width="128"
           height="128"
           alt="Avatar"
