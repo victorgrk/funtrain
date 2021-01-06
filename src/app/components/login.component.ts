@@ -38,6 +38,7 @@ import { AuthentificationService } from '../core/services/Authentification.servi
           [(ngModel)]="password"
         />
       </div>
+      <p>En cas d'oubli de mot de passe, merci de contacter l'administrateur</p>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" [disabled]="invalid" (click)="login()">Se Connecter</button>

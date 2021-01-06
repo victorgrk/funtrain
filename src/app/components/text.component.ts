@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { AuthentificationService } from 'src/app/core/services/Authentification.service'
 import { APIService } from 'src/app/core/services/API.service'
-import { Observable } from 'rxjs';
-import { startWith, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observable } from 'rxjs'
+import { startWith, tap } from 'rxjs/operators'
+import { ToastrService } from '../core/services/toastr.service'
 
 declare var window: any;
 declare var adsbygoogle: any;
@@ -72,7 +72,8 @@ export class TextComponent implements OnInit {
 
   constructor(
     private $api: APIService,
-    private $auth: AuthentificationService
+    private $auth: AuthentificationService,
+    private $toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -88,7 +89,7 @@ export class TextComponent implements OnInit {
     )
   }
   onSubmit() {
-    this.text$ = this.$api.put<string>(`texts/${this.location}`, { location: this.location, text: this.copyText }).pipe(
+    this.text$ = this.$api.put<string>(`texts`, { location: this.location, text: this.copyText }).pipe(
       startWith(''),
       tap((e: string) => this.copyText = e.split('<br/>').join('\n')),
       tap((e: string) => {
@@ -97,11 +98,11 @@ export class TextComponent implements OnInit {
           `<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>`)) {
           (adsbygoogle = window.adsbygoogle || []).push({});
         }
+        this.$toastr.success('Le texte a bien été modifié', 'Texte modifié')
       })
     )
   }
   dismiss() {
     this.isInEditorMode = !this.isInEditorMode
-    this.text$ = of(this.copyText)
   }
 }
