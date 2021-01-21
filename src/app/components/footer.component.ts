@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core"
+import { Component } from "@angular/core"
 import { AuthentificationService } from '../core/services/Authentification.service'
 import { BsModalService } from 'ngx-bootstrap/modal'
 import { LoginComponent } from './login.component'
@@ -57,7 +57,6 @@ import { Router } from '@angular/router'
     margin-bottom: 0 !important;
   }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent {
   constructor(

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { from, fromEvent, iif, Observable } from 'rxjs';
-import { debounceTime, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { APIService } from 'src/app/core/services/API.service';
 
 @Component({
@@ -42,9 +42,14 @@ export class SearchComponent implements AfterViewInit {
     this.active = Math.max(0, Math.min(this.active + multiplier[$event.key], this.resultSize - 1))
   }
 
-  submit(event: Event, ref: string) {
+  submit(event: Event, ref?: string) {
     event.stopPropagation();
     event.preventDefault();
-    this.$router.navigateByUrl(ref);
+    if (!ref) {
+      document.getElementById(`result-${this.active}`)?.click()
+    }
+    else {
+      this.$router.navigateByUrl(ref);
+    }
   }
 }

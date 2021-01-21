@@ -11,6 +11,7 @@ import { LineComponent } from './line/line.component';
 import { LineFormComponent } from './line-form/line-form.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { AdsenseModule } from 'ng2-adsense';
 
 
 @NgModule({
@@ -22,6 +23,14 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     UIModule,
     FormsModule,
     ReactiveFormsModule,
+    AdsenseModule.forRoot({
+      adClient: "ca-pub-9559903561846592",
+      adSlot: "4457937979",
+      display: "inline-block",
+      adFormat: "rectangle",
+      width: 200,
+      height: 200
+    }),
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
     TabsModule.forRoot(),

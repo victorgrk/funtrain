@@ -11,6 +11,7 @@ import { HandlerFormComponent } from './handler-form/handler-form.component';
 import { HandlerComponent } from './handler/handler.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { AdsenseModule } from 'ng2-adsense';
 
 
 @NgModule({
@@ -25,6 +26,14 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ReactiveFormsModule,
     TabsModule.forRoot(),
     ModalModule.forRoot(),
+    AdsenseModule.forRoot({
+      adClient: "ca-pub-9559903561846592",
+      adSlot: "4457937979",
+      display: "inline-block",
+      adFormat: "rectangle",
+      width: 200,
+      height: 200
+    }),
   ]
 })
 export class HandlersModule { }

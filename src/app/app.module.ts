@@ -26,8 +26,8 @@ import { environment } from '../environments/environment';
       adSlot: "4457937979",
       display: "inline-block",
       adFormat: "rectangle",
-      width: 240,
-      height: 240
+      width: 200,
+      height: 200
     }),
     FacebookModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })

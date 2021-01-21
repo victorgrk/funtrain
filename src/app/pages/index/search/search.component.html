@@ -6,10 +6,12 @@
     placeholder="Recherche sur le site..."
     (keydown.arrowup)="changeActive($event)"
     (keydown.arrowdown)="changeActive($event)"
+    (keydown.enter)="submit($event)"
   />
   <div class="autocomplete-items">
     <div
       *ngFor="let result of results$ | async; let i = index"
+      [id]="'result-' + i"
       (click)="submit($event, result.ref)"
       (keydown.enter)="submit($event, result.ref)"
       (keydown.arrowup)="changeActive($event)"
